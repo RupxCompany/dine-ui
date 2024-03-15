@@ -3,6 +3,7 @@ import { Box, Button, VStack, HStack, SimpleGrid, Text, Image, Center, Icon } fr
 import { AddIcon } from '@chakra-ui/icons'; // Importing AddIcon for the plus sign
 
 
+
 const CategoryItems = ({ category, updateCartItemCount }) => {
   const items = categoryItems[category] || [];
   const [quantities, setQuantities] = useState(items.map(() => 0));

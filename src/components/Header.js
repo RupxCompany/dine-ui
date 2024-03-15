@@ -13,16 +13,16 @@ const Header = ({ cartItemCount }) => {
           <Text marginLeft="2" fontFamily="'Roboto', sans-serif" color="white">Room 3B</Text>
         </Flex>
         <Box position="relative">
-          <FiShoppingCart color="white" size="1.5rem" />
+          <FiShoppingCart color="white" size="1.6rem" />
           {cartItemCount > 0 && (
             <Badge
               position="absolute"
               top="-1"
               right="-1"
               borderRadius="full"
-              px="1"
-              bg="#9c3111" // Deep blue background
-              color="white" // White text for contrast
+              px="1.5"
+              bg="#cf5777"
+              color="white"
             >
               {cartItemCount}
             </Badge>

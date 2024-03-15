@@ -20,8 +20,8 @@ const Categories = ({ onSelectCategory, selectedCategory }) => {
     >
       <HStack spacing={4} minW="max-content">
         {categories.map((category) => (
-          <Button 
-            key={category} 
+          <Button
+            key={category}
             onClick={() => onSelectCategory(category)}
             borderRadius="20px"
             backgroundColor="white"

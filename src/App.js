@@ -4,6 +4,12 @@ import { Box } from '@chakra-ui/react';
 import Header from './components/Header';
 import Categories from './components/Categories'; // Import the Categories component
 import CategoryItems from './components/CategoryItems'; // Import the component
+import ViewCartButton from './components/ViewCartButton'
+
+const handleViewCart = () => {
+  // Logic to view the cart
+  console.log('Viewing cart');
+};
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -11,8 +17,6 @@ function App() {
 
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
-    // Logic to fetch/display the food items related to the selected category
-    console.log(`Selected category: ${category}`);
   };
 
   const updateCartItemCount = (count) => {
@@ -24,6 +28,7 @@ function App() {
       <Header cartItemCount={cartItemCount}  />
       <Categories onSelectCategory={handleSelectCategory} selectedCategory={selectedCategory} />
       <CategoryItems category={selectedCategory} updateCartItemCount={updateCartItemCount} />
+      {cartItemCount > 0 && <ViewCartButton onClick={handleViewCart} itemCount={cartItemCount} />}
     </Box>
   );
 }
