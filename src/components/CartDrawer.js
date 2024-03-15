@@ -1,4 +1,3 @@
-// CartDrawer.js
 import React from 'react';
 import {
   Drawer,
@@ -13,22 +12,40 @@ import {
   Button,
   Text,
   VStack,
-  Box
+  Box,
+  Icon,
 } from '@chakra-ui/react';
 import { FaCheckCircle } from 'react-icons/fa';
+import { FaWhatsapp } from 'react-icons/fa'; // Importing the WhatsApp icon
 
-const CartDrawer = ({ isOpen, onClose, cart }) => {
+
+const CartDrawer = ({ isOpen, onClose, cart, setCart }) => {
   const itemQuantityInCart = (item) => cart.filter((k) => k.id === item.id).length;
 
   const uniqueItemsInCart = () => cart.filter((item, index, array) =>
     index === array.findIndex((t) => t.id === item.id)
   );
 
+  const recipientNumber = '+919074251001'; // Replace with the actual phone number
+
+
   const totalCartValue = uniqueItemsInCart().reduce((total, item) => total + (parseInt(item.price, 10) * itemQuantityInCart(item)), 0);
 
   const handlePlaceOrder = () => {
-    onClose()
+    let message = "I would like to place an order:\n";
+    uniqueItemsInCart().forEach(item => {
+      message += `${item.name} - Quantity: ${itemQuantityInCart(item)} - Price: ₹${item.price * itemQuantityInCart(item)}\n`;
+    });
+    message += `Total: ₹${totalCartValue}`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${recipientNumber}&text=${encodedMessage}`;
+
+    setCart([])
+    window.open(whatsappUrl, '_blank'); // Open WhatsApp in a new tab/window
+    onClose();
   };
+
 
   return (
     <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
@@ -50,7 +67,13 @@ const CartDrawer = ({ isOpen, onClose, cart }) => {
           </Box>
         </DrawerBody>
         <VStack p={4}>
-          <Button bg="#329618" color="white" onClick={handlePlaceOrder} width="full">
+        <Button
+            leftIcon={<Icon as={FaWhatsapp} />}
+            bg="#329618"
+            color="white"
+            onClick={handlePlaceOrder}
+            width="full"
+          >
             Place Order
           </Button>
         </VStack>

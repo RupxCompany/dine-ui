@@ -20,7 +20,7 @@ function App() {
       <Categories onSelectCategory={handleSelectCategory} selectedCategory={selectedCategory} />
       <CategoryItems category={selectedCategory} cart={cart} setCart={setCart} />
       {cart.length > 0 && <ViewCartButton onClick={onOpen} itemCount={cart.length} />}
-      <CartDrawer isOpen={isOpen} onClose={onClose} cart={cart} />
+      <CartDrawer isOpen={isOpen} onClose={onClose} cart={cart} setCart={setCart} />
     </Box>
   );
 }

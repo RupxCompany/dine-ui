@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, useDisclosure, Flex, Input, InputGroup, InputLeftElement, Text, HStack, Badge } from '@chakra-ui/react';
+import { Box, Flex, Input, InputGroup, InputLeftElement, Text, HStack, Badge } from '@chakra-ui/react';
 import { MdLocationOn } from 'react-icons/md';
 import { FiShoppingCart } from 'react-icons/fi';
 import { SearchIcon } from '@chakra-ui/icons';
