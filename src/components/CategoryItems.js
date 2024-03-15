@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Button, VStack, HStack, SimpleGrid, Text, Image, Center, Icon } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons'; // Importing AddIcon for the plus sign
-
+import React, { useState, useEffect } from 'react'
+import { Box, Button, VStack, SimpleGrid, Text, Image, Center, Icon } from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
 
 
 const CategoryItems = ({ category, updateCartItemCount }) => {
-  const items = categoryItems[category] || [];
-  const [quantities, setQuantities] = useState(items.map(() => 0));
+  const items = categoryItems[category] || []
+  const [quantities, setQuantities] = useState(items.map(() => 0))
 
   const handleQuantityChange = (index, value) => {
-    const newQuantities = [...quantities];
-    newQuantities[index] = Math.max(0, value);
-    setQuantities(newQuantities);
-  };
+    const newQuantities = [...quantities]
+    newQuantities[index] = Math.max(0, value)
+    setQuantities(newQuantities)
+  }
 
   const handleAddClick = (index) => {
-    const newQuantities = [...quantities];
-    newQuantities[index] = 1;
-    setQuantities(newQuantities);
+    const newQuantities = [...quantities]
+    newQuantities[index] = 1
+    setQuantities(newQuantities)
   }
 
   useEffect(() => {
-    const totalItems = quantities.reduce((acc, quantity) => acc + quantity, 0);
-    updateCartItemCount(totalItems);
-  }, [quantities, updateCartItemCount]);
+    const totalItems = quantities.reduce((acc, quantity) => acc + quantity, 0)
+    updateCartItemCount(totalItems)
+  }, [quantities, updateCartItemCount])
 
   return (
     <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={5} p={5}>
@@ -33,7 +32,7 @@ const CategoryItems = ({ category, updateCartItemCount }) => {
             {item.image_path?
             <Image src={item.image_path} alt={item.name} objectFit="cover" borderRadius="md" />
               :
-            <Image src="paratha.webp" alt={item.name} objectFit="cover" borderRadius="md" />
+            <Image src="logo.png" alt={item.name} objectFit="cover" borderRadius="md" />
             }
             <Center position="absolute" bottom="-10px" left="0" right="0">
               {quantities[index] > 0 ? (
@@ -67,10 +66,10 @@ const CategoryItems = ({ category, updateCartItemCount }) => {
         </Box>
       ))}
     </SimpleGrid>
-  );
-};
+  )
+}
 
-export default CategoryItems;
+export default CategoryItems
 
 
 const categoryItems = {
@@ -98,7 +97,7 @@ const categoryItems = {
     { name: "Dal Makhni", description: "Creamy and buttery black lentil curry", price: "₹130", image_path:'dal_makhni.webp' },
     { name: "Dal Tadka", description: "Yellow lentils tempered with spices and herbs", price: "₹130", image_path: 'dal_tadka.webp' },
     { name: "Kadhai Paneer", description: "Paneer cooked with bell peppers in a spicy gravy", price: "₹130", image_path: 'kadhai_paneer.webp' },
-    { name: "Jeera Rice", description: "Basmati rice flavored with cumin", price: "₹100", image_path: 'jeera_rice .webp' },
+    { name: "Jeera Rice", description: "Basmati rice flavored with cumin", price: "₹100", image_path: 'jeera_rice.webp' },
     { name: "Karela", description: "Bitter gourd dish cooked with Indian spices", price: "₹100", image_path: 'karela.webp' },
     { name: "Plain Rice", description: "Steamed plain basmati rice", price: "₹80", image_path: 'plain_rice.webp' },
     { name: "Thali (2 Hours Before)", description: "A platter of assorted Indian dishes", price: "₹199", image_path: 'thali.webp' },
@@ -107,11 +106,10 @@ const categoryItems = {
     { name: "Onion/ Aloo Pakoda", description: "Fritters made with onion/potato coated in chickpea flour", price: "₹100", image_path: 'onion_pakoda.webp' },
     { name: "Chilli Paneer", description: "Paneer cubes stir-fried with bell peppers and Chinese sauces", price: "₹210", image_path: 'chilli_paneer.webp' },
     { name: "French Fries", description: "Classic crispy fried potatoes", price: "₹160", image_path: 'french_fries.webp' },
-    { name: "Chilli Potato", description: "Spicy and tangy stir-fried potatoes", price: "₹190" },
-    { name: "Honey Chilli Potato", description: "Potatoes with a sweet and spicy glaze", price: "₹190" },
-    { name: "Potato Wedges", description: "Seasoned and baked potato wedges", price: "₹190" },
-    { name: "Vanilla Shake", description: "Creamy vanilla-flavored milkshake", price: "₹70" },
-    { name: "Boondi Raita", description: "Yogurt mixed with tiny fried gram flour balls", price: "₹80" },
+    { name: "Chilli Potato", description: "Spicy and tangy stir-fried potatoes", price: "₹190", image_path: 'chilli_potato.webp' },
+    { name: "Honey Chilli Potato", description: "Potatoes with a sweet and spicy glaze", price: "₹190", image_path: 'honey_chilli_potato.webp' },
+    { name: "Potato Wedges", description: "Seasoned and baked potato wedges", price: "₹190", image_path: 'potato_wedges.webp' },
+    { name: "Boondi Raita", description: "Yogurt mixed with tiny fried gram flour balls", price: "₹80", image_path: 'bondi_raita.webp' },
 
   ],
   Breakfast: [
@@ -137,7 +135,7 @@ const categoryItems = {
     { name: "Jeera Rice", description: "Basmati rice flavored with cumin", price: "₹100", image_path: 'jeera_rice.webp' },
     { name: "Karela", description: "Bitter gourd dish cooked with Indian spices", price: "₹100", image_path: 'karela.webp' },
     { name: "Plain Rice", description: "Steamed plain basmati rice", price: "₹80", image_path: 'plain_rice.webp' },
-    { name: "Boondi Raita", description: "Yogurt mixed with tiny fried gram flour balls", price: "₹80" },
+    { name: "Boondi Raita", description: "Yogurt mixed with tiny fried gram flour balls", price: "₹80", image_path: 'bondi_raita.webp' },
     { name: "Thali (2 Hours Before)", description: "A platter of assorted Indian dishes", price: "₹199", image_path: 'thali.webp' },
     { name: "Tawa Roti", description: "Whole wheat flatbread made on a tawa", price: "₹10", image_path: 'tawa_roti.webp' },
     { name: "Butter Tawa Roti", description: "Tawa roti topped with butter", price: "₹15", image_path: 'butter_tawa_roti.webp' },
@@ -147,8 +145,8 @@ const categoryItems = {
     { name: "Chilli Paneer", description: "Paneer cubes stir-fried with bell peppers and Chinese sauces", price: "₹210", image_path: 'chilli_paneer.webp' },
     { name: "French Fries", description: "Classic crispy fried potatoes", price: "₹160", image_path: 'french_fries.webp' },
     { name: "Chilli Potato", description: "Spicy and tangy stir-fried potatoes", price: "₹190", image_path: 'chilli_paneer.webp' },
-    { name: "Honey Chilli Potato", description: "Potatoes with a sweet and spicy glaze", price: "₹190" },
-    { name: "Potato Wedges", description: "Seasoned and baked potato wedges", price: "₹190" },
+    { name: "Honey Chilli Potato", description: "Potatoes with a sweet and spicy glaze", price: "₹190", image_path: 'honey_chilli_potato.webp' },
+    { name: "Potato Wedges", description: "Seasoned and baked potato wedges", price: "₹190", image_path: 'potato_wedges.webp' },
   ],
   Shakes: [
     { name: "Vanilla Shake", description: "Creamy vanilla-flavored milkshake", price: "₹70", image_path: "valina_shake.webp" },
@@ -158,5 +156,5 @@ const categoryItems = {
     { name: "Fruit Bowl", description: "Assorted fresh fruits", price: "₹80", image_path: 'fruit_bowl.webp' },
     { name: "Fresh Lime Soda", description: "Refreshing lime-flavored soda", price: "₹70", image_path: 'lime.webp' },
   ],
-};
+}
 
