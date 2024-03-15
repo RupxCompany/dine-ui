@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Button, HStack, Text } from '@chakra-ui/react';
 
 const Categories = ({ onSelectCategory, selectedCategory }) => {
-  const categories = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Drinks', 'Snacks', 'Desserts', 'Specials'];
+  const categories = ['All', 'Breakfast', 'Lunch/Dinner', 'Snacks', 'Shakes'];
 
   return (
     <Box
@@ -29,7 +29,7 @@ const Categories = ({ onSelectCategory, selectedCategory }) => {
             _hover={{
               backgroundColor: "#f7fafc",
             }}
-            borderBottom={selectedCategory === category ? "3px solid #5ed141" : "none"}
+            borderBottom={selectedCategory === category ? "3px solid #329618" : "none"}
             transition="background-color 0.3s ease, border-bottom 0.3s ease"
           >
             {category}

@@ -6,7 +6,8 @@ import Categories from './components/Categories'; // Import the Categories compo
 import CategoryItems from './components/CategoryItems'; // Import the component
 
 function App() {
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [cartItemCount, setCartItemCount] = useState(0)
 
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
@@ -14,11 +15,15 @@ function App() {
     console.log(`Selected category: ${category}`);
   };
 
+  const updateCartItemCount = (count) => {
+    setCartItemCount(count);
+  };
+
   return (
     <Box paddingBottom={1} bg="gray.100" minH="100vh">
-      <Header />
+      <Header cartItemCount={cartItemCount}  />
       <Categories onSelectCategory={handleSelectCategory} selectedCategory={selectedCategory} />
-      <CategoryItems category={selectedCategory} />
+      <CategoryItems category={selectedCategory} updateCartItemCount={updateCartItemCount} />
     </Box>
   );
 }
