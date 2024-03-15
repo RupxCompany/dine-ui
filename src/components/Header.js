@@ -1,10 +1,10 @@
 import React from 'react';
-import { Box, Flex, Input, InputGroup, InputLeftElement, Text, HStack, Badge } from '@chakra-ui/react';
+import { Box, useDisclosure, Flex, Input, InputGroup, InputLeftElement, Text, HStack, Badge } from '@chakra-ui/react';
 import { MdLocationOn } from 'react-icons/md';
 import { FiShoppingCart } from 'react-icons/fi';
 import { SearchIcon } from '@chakra-ui/icons';
 
-const Header = ({ cartItemCount }) => {
+const Header = ({ cartItemCount, showCart }) => {
   return (
     <Box p={4} boxShadow="lg" borderBottomRadius="lg" bg="#5ed141">
       <HStack justifyContent="space-between">
@@ -12,8 +12,8 @@ const Header = ({ cartItemCount }) => {
           <MdLocationOn color="white" size="1.5rem" />
           <Text marginLeft="2" fontFamily="'Roboto', sans-serif" color="white">Room 3B</Text>
         </Flex>
-        <Box position="relative">
-          <FiShoppingCart color="white" size="1.6rem" />
+        <Box position="relative" onClick={showCart}>
+          <FiShoppingCart color="white" size="1.6rem"  />
           {cartItemCount > 0 && (
             <Badge
               position="absolute"
