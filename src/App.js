@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import Header from './components/Header';
 import Categories from './components/Categories'; // Import the Categories component
+import CategoryItems from './components/CategoryItems'; // Import the component
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -17,7 +18,7 @@ function App() {
     <Box paddingBottom={1} bg="gray.100" minH="100vh">
       <Header />
       <Categories onSelectCategory={handleSelectCategory} selectedCategory={selectedCategory} />
-      {/* Render the food items based on the selected category */}
+      <CategoryItems category={selectedCategory} />
     </Box>
   );
 }
