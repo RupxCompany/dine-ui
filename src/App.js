@@ -1,5 +1,5 @@
 // App.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import Header from './components/Header';
 import Categories from './components/Categories'; // Import the Categories component
@@ -13,22 +13,18 @@ const handleViewCart = () => {
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('All')
-  const [cartItemCount, setCartItemCount] = useState(0)
+  const [cart, setCart] = useState([])
 
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
   };
 
-  const updateCartItemCount = (count) => {
-    setCartItemCount(count);
-  };
-
   return (
     <Box paddingBottom={1} bg="gray.100" minH="100vh">
-      <Header cartItemCount={cartItemCount}  />
+      <Header cartItemCount={cart.length}  />
       <Categories onSelectCategory={handleSelectCategory} selectedCategory={selectedCategory} />
-      <CategoryItems category={selectedCategory} updateCartItemCount={updateCartItemCount} />
-      {cartItemCount > 0 && <ViewCartButton onClick={handleViewCart} itemCount={cartItemCount} />}
+      <CategoryItems category={selectedCategory} cart={cart} setCart={setCart} />
+      {cart.length > 0 && <ViewCartButton onClick={handleViewCart} itemCount={cart.length} />}
     </Box>
   );
 }

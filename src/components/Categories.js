@@ -1,6 +1,6 @@
 // Categories.js
 import React from 'react';
-import { Box, Button, HStack, Text } from '@chakra-ui/react';
+import { Box, Button, HStack } from '@chakra-ui/react';
 
 const Categories = ({ onSelectCategory, selectedCategory }) => {
   const categories = ['All', 'Breakfast', 'Lunch/Dinner', 'Snacks', 'Shakes'];
