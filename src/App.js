@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, useDisclosure } from '@chakra-ui/react';
 import Header from './components/Header';
 import Categories from './components/Categories';
@@ -13,6 +13,10 @@ function App() {
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
   };
+
+  useEffect(() => {
+    document.title = "Rupx Dine";
+  }, []);
 
   return (
     <Box paddingBottom={1} bg="gray.100" minH="100vh">
