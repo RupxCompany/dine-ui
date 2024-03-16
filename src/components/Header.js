@@ -10,7 +10,7 @@ const Header = ({ cartItemCount, showCart }) => {
       <HStack justifyContent="space-between">
         <Flex alignItems="center">
           <MdLocationOn color="white" size="1.5rem" />
-          <Text marginLeft="2" fontFamily="'Roboto', sans-serif" color="white">Room 3B</Text>
+          <Text marginLeft="2" fontFamily="'Roboto', sans-serif" color="white">Jugglers Rest: 3B</Text>
         </Flex>
         <Box position="relative" onClick={showCart}>
           <FiShoppingCart color="white" size="1.6rem"  />
