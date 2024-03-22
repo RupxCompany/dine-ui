@@ -3,8 +3,10 @@ import { Box, Button, VStack, SimpleGrid, Text, Image, Center, Icon } from '@cha
 import { AddIcon } from '@chakra-ui/icons'
 
 
-const CategoryItems = ({ category, cart, setCart }) => {
-  const items = categoryItems[category] || []
+const CategoryItems = ({ category, cart, setCart, searchQuery }) => {
+  const items = (categoryItems[category] || []).filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
   const [quantities, setQuantities] = useState(items.map(() => 0))
 
   const handleQuantityChange = (item, value) => {
