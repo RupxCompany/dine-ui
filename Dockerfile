@@ -21,8 +21,9 @@ COPY . .
 # Copy the envfile and source it to set environment variables
 RUN ls /
 RUN ls /env/
-COPY envfile ./
-RUN set -a && . ./envfile && set +a
+RUN cat /env/secrets
+COPY /env/secrets	 ./
+RUN set -a && . ./secrets && set +a
 
 
 
