@@ -1,42 +1,35 @@
 steps:
+  # Step to fetch the secret and create the envfile
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    id: 'Fetch Secrets and Build'
+    id: 'Prepare envfile'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        # Fetch the entire secret file
-        echo "$(gcloud secrets versions access latest --secret="dine-ui-secrets" --format='get(payload.data)' | tr '_-' '/+' | base64 -d)" > envfile
-        # Now build the Docker image, passing the envfile as a build context
-        docker build --no-cache -t gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA . -f Dockerfile
-    volumes:
-      - name: 'vol1'
-        path: '/workspace'
+        echo "$(gcloud secrets versions access latest --secret='my-secret-env-file' --format='get(payload.data)' | tr '_-' '/+' | base64 -d)" > envfile
 
-  - name: gcr.io/cloud-builders/docker
+  # Step to build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Build'
+    args:
+      - build
+      - '--no-cache'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA'
+      - '.'
+      - '-f'
+      - 'Dockerfile'
+
+  # Step to push the image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Push'
     args:
       - push
-      - >-
-        gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA
-    id: Push
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    args:
-      - run
-      - services
-      - update
-      - $_SERVICE_NAME
-      - '--platform=managed'
-      - >-
-        --image=gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA
-      - >-
-        --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$SHORT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID
-      - '--region=asia-south1'
-      - '--quiet'
-    id: Deploy
-    entrypoint: gcloud
+      - 'gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA'
+
 images:
-  - >-
-    gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA
+  - 'gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA'
+
 options:
   substitutionOption: ALLOW_LOOSE
   logging: CLOUD_LOGGING_ONLY
