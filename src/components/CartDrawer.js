@@ -15,22 +15,24 @@ import {
   Box,
   Icon,
 } from '@chakra-ui/react'
-import { FaCheckCircle } from 'react-icons/fa'
-import { FaWhatsapp } from 'react-icons/fa' // Importing the WhatsApp icon
+import {FaCheckCircle} from 'react-icons/fa'
+import {FaWhatsapp} from 'react-icons/fa' // Importing the WhatsApp icon
 
 
-const CartDrawer = ({ isOpen, onClose, cart, setCart, ctaPhone }) => {
+const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone}) => {
   const itemQuantityInCart = (item) => cart.filter((k) => k.id === item.id).length
 
   const uniqueItemsInCart = () => cart.filter((item, index, array) =>
-    index === array.findIndex((t) => t.id === item.id)
+    index === array.findIndex((t) => t.id === item.id),
   )
 
-  const totalCartValue = uniqueItemsInCart().reduce((total, item) => total + (parseInt(item.price, 10) * itemQuantityInCart(item)), 0)
+  const totalCartValue = uniqueItemsInCart().reduce((total, item) => total +
+  (parseInt(item.price, 10) * itemQuantityInCart(item)), 0)
 
   const handlePlaceOrder = () => {
-    let message = "I would like to place an order:\n"
-    uniqueItemsInCart().forEach(item => {
+    let message = 'I would like to place an order:\n'
+    uniqueItemsInCart().forEach((item) => {
+      // eslint-disable-next-line max-len
       message += `${item.name} - Quantity: ${itemQuantityInCart(item)} - Price: ₹${item.price * itemQuantityInCart(item)}\n`
     })
     message += `Total: ₹${totalCartValue}`
@@ -64,7 +66,7 @@ const CartDrawer = ({ isOpen, onClose, cart, setCart, ctaPhone }) => {
           </Box>
         </DrawerBody>
         <VStack p={4}>
-        <Button
+          <Button
             leftIcon={<Icon as={FaWhatsapp} />}
             bg="#329618"
             color="white"

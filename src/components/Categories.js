@@ -1,8 +1,8 @@
 // Categories.js
 import React from 'react'
-import { Box, Button, HStack } from '@chakra-ui/react'
+import {Box, Button, HStack} from '@chakra-ui/react'
 
-const Categories = ({ onSelectCategory, selectedCategory }) => {
+const Categories = ({onSelectCategory, selectedCategory}) => {
   const categories = ['All', 'Breakfast', 'Lunch/Dinner', 'Snacks', 'Shakes']
 
   return (
@@ -27,9 +27,9 @@ const Categories = ({ onSelectCategory, selectedCategory }) => {
             backgroundColor="white"
             color="black"
             _hover={{
-              backgroundColor: "#f7fafc",
+              backgroundColor: '#f7fafc',
             }}
-            borderBottom={selectedCategory === category ? "3px solid #329618" : "none"}
+            borderBottom={selectedCategory === category ? '3px solid #329618' : 'none'}
             transition="background-color 0.3s ease, border-bottom 0.3s ease"
           >
             {category}
