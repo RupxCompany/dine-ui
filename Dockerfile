@@ -30,7 +30,7 @@ FROM node:20.11.1
 WORKDIR /app
 
 # Install bash and serve
-RUN apk add --no-cache bash
+
 RUN npm install -g serve
 
 # Copy the built app from the build-stage
