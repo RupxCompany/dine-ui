@@ -6,9 +6,9 @@ steps:
       - '-c'
       - |
         # Fetch the entire secret file
-        SECRETS="$(gcloud secrets versions access latest --secret="dine-ui-secrets" --format='get(payload.data)' | tr '_-' '/+' | base64 -d)"
+        _SECRETS="$(gcloud secrets versions access latest --secret="dine-ui-secrets" --format='get(payload.data)' | tr '_-' '/+' | base64 -d)"
         # Now build the Docker image, passing the envfile as a build context
-        docker build --no-cache --build-arg SECRETS=$SECRETS -t gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA . -f Dockerfile
+        docker build --no-cache --build-arg SECRETS=$_SECRETS -t gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA . -f Dockerfile
 
   - name: gcr.io/cloud-builders/docker
     args:
