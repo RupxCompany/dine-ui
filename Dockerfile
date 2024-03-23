@@ -20,10 +20,10 @@ COPY . .
 
 # Copy the envfile and source it to set environment variables
 
-ARG SECRETS
-RUN echo $SECRETS
+ARG _SECRETS
+RUN echo $_SECRETS
 
-RUN echo $SECRETS > .env && export $(cat .env | xargs)
+RUN echo $_SECRETS > .env && export $(cat .env | xargs)
 
 RUN env
 
