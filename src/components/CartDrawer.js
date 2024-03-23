@@ -31,11 +31,10 @@ const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone, restaurantInfo}) 
 
   const handlePlaceOrder = () => {
     const separator = `${'—'.repeat(15)}`
-    const itemsText = `\n${separator}\nItems:\n${separator}\n`
-    let message = `I would like to place an order:\n${separator}\n`
-    message += `ID: ${Math.random().toString(36).slice(2, 8).toUpperCase()}\n`
-    message += `From: ${restaurantInfo.space}\n`
-    message += itemsText
+    let message = `I would like to place an order\n\n`
+    // message += `${Math.random().toString(36).slice(2, 8).toUpperCase()}\n\n`
+    message += `From: ${restaurantInfo.space}\n\n`
+    message += 'Items:\n'
     uniqueItemsInCart().forEach((item) => {
       // eslint-disable-next-line max-len
       message += `${item.name} - x ${itemQuantityInCart(item)} = ₹${item.price * itemQuantityInCart(item)}\n`
@@ -48,7 +47,7 @@ const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone, restaurantInfo}) 
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${ctaPhone}&text=${encodedMessage}`
 
     setCart([])
-    window.open(whatsappUrl) // Open WhatsApp in a new tab/window
+    window.open(whatsappUrl, '_blank') // Open WhatsApp in a new tab/window
     onClose()
   }
 
