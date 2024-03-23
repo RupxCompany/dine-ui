@@ -1,5 +1,5 @@
 # Step 1: Build the React application
-FROM node:alpine as build-stage
+FROM node:20.11.1 as build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -26,7 +26,7 @@ RUN echo $REACT_APP_DINE_ENGINE_URL > .env
 RUN npm run build
 
 # Step 2: Serve the app using serve
-FROM node:alpine
+FROM node:20.11.1
 WORKDIR /app
 
 # Install bash and serve
