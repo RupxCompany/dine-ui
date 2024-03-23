@@ -4,6 +4,7 @@ options:
 steps:
   # Step 1: Fetch secrets from Secret Manager and build the Docker image
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'build'
     entrypoint: 'bash'
     args:
       - '-c'
@@ -14,12 +15,14 @@ steps:
 
   # Step 2: Push the image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
+    id: 'push'
     args:
       - 'push'
       - 'gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA'
 
   # Step 3: Deploy the image to Google Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy'
     entrypoint: 'gcloud'
     args:
       - 'run'
