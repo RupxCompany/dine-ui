@@ -9,9 +9,10 @@ steps:
       - '-c'
       - |
         echo "Fetching secret..."
-        SECRET_VALUE=$(gcloud secrets versions access latest --secret="dine-ui-secrets" --format='get(payload.data)' | tr '_-' '/+' | base64 -d)
+        SECRET=$(gcloud secrets versions access latest --secret="dine-ui-secrets" --format='get(payload.data)' | tr '_-' '/+' | base64 -d)
+        REACT_APP_DINE_ENGINE_URL=$(echo $SECRET | cut -d '=' -f2)
         echo "Building Docker image..."
-        docker build --build-arg REACT_APP_DINE_ENGINE_URL=$(echo $SECRET_VALUE | cut -d '=' -f2) -t gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA .
+        docker build --build-arg REACT_APP_DINE_ENGINE_URL=$REACT_APP_DINE_ENGINE_URL -t gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA .
 
   # Step 2: Push the image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
