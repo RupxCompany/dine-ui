@@ -20,5 +20,5 @@ COPY --from=build-stage /app/build /app
 EXPOSE 8080
 
 # Start the application, ensuring it listens on the correct port
-CMD ["bash", "./start.sh"]
+CMD ["sh", "./start.sh"]
 

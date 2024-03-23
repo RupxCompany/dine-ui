@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Check if PRANA_RUNTIME_SECRETS is not empty
 if [ -z "$PRANA_RUNTIME_SECRETS" ]; then
