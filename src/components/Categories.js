@@ -1,9 +1,9 @@
 // Categories.js
-import React from 'react';
-import { Box, Button, HStack } from '@chakra-ui/react';
+import React from 'react'
+import { Box, Button, HStack } from '@chakra-ui/react'
 
 const Categories = ({ onSelectCategory, selectedCategory }) => {
-  const categories = ['All', 'Breakfast', 'Lunch/Dinner', 'Snacks', 'Shakes'];
+  const categories = ['All', 'Breakfast', 'Lunch/Dinner', 'Snacks', 'Shakes']
 
   return (
     <Box
@@ -37,7 +37,7 @@ const Categories = ({ onSelectCategory, selectedCategory }) => {
         ))}
       </HStack>
     </Box>
-  );
-};
+  )
+}
 
-export default Categories;
+export default Categories

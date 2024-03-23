@@ -1,11 +1,11 @@
-import React from 'react';
-import { Box, Button, useColorModeValue, Icon, Text, Flex } from '@chakra-ui/react';
-import { FaShoppingCart, FaArrowRight } from 'react-icons/fa'; // Import the required icons
+import React from 'react'
+import { Box, Button, useColorModeValue, Icon, Text, Flex } from '@chakra-ui/react'
+import { FaShoppingCart, FaArrowRight } from 'react-icons/fa' // Import the required icons
 
 const ViewCartButton = ({ onClick, itemCount }) => {
-  const bgColor = "#5ed141"; // Green background color
-  const hoverBgColor = useColorModeValue('#9cdb8b', '#789456'); // Slightly darker on hover
-  const textColor = useColorModeValue('black', 'white'); // Text color based on theme
+  const bgColor = "#5ed141" // Green background color
+  const hoverBgColor = useColorModeValue('#9cdb8b', '#789456') // Slightly darker on hover
+  const textColor = useColorModeValue('black', 'white') // Text color based on theme
 
   return (
     <Box position="fixed" bottom="0" left="0" right="0" p={4} boxShadow="md">
@@ -30,7 +30,7 @@ const ViewCartButton = ({ onClick, itemCount }) => {
         </Flex>
       </Button>
     </Box>
-  );
-};
+  )
+}
 
-export default ViewCartButton;
+export default ViewCartButton
