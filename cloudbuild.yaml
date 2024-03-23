@@ -20,16 +20,14 @@ steps:
 
   # Step 3: Deploy the image to Google Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
     args:
       - 'run'
       - 'deploy'
       - 'i-dine-ui-service'
-      - '--image'
-      - 'gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA'
-      - '--region'
-      - 'us-central1'
-      - '--platform'
-      - 'managed'
+      - '--image=gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA'
+      - '--region=asia-south1'
+      - '--platform=managed'
       - '--allow-unauthenticated'
 
 images:
