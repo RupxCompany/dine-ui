@@ -9,10 +9,7 @@ COPY secrets.env .
 
 RUN cat ./secrets.env
 
-ARG _SECRETS
-RUN echo $_SECRETS
-
-RUN echo $_SECRETS > .env && export $(cat .env | xargs)
+RUN export $(cat ./secrets.env | xargs)
 
 RUN env
 
