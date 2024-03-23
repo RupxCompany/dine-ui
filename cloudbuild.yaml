@@ -9,10 +9,8 @@ steps:
       - '-c'
       - |
         echo "Fetching secret..."
-        # Fetch the secret and directly pass it to the build command
-        REACT_APP_DINE_ENGINE_URL=$(gcloud secrets versions access latest --secret="dine-ui-secrets" --format='get(payload.data)' | tr '_-' '/+' | base64 -d | cut -d '=' -f2)
-        echo "Building Docker image with REACT_APP_DINE_ENGINE_URL=$REACT_APP_DINE_ENGINE_URL"
-        docker build --build-arg REACT_APP_DINE_ENGINE_URL="$REACT_APP_DINE_ENGINE_URL" -t gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA .
+        # Directly inject the secret into the Docker build command without exporting it
+        docker build --build-arg REACT_APP_DINE_ENGINE_URL=$(gcloud secrets versions access latest --secret="dine-ui-secrets" --format='get(payload.data)' | tr '_-' '/+' | base64 -d | cut -d '=' -f2) -t gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA .
 
   # Step 2: Push the image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
