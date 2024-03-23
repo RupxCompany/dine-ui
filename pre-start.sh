@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Check if PRANA_RUNTIME_SECRETS is not empty
+echo "PRANA_RUNTIME_SECRETS>>>"
+echo $PRANA_RUNTIME_SECRETS
 if [ -z "$PRANA_RUNTIME_SECRETS" ]; then
   echo "PRANA_RUNTIME_SECRETS is not set"
   exit 1
