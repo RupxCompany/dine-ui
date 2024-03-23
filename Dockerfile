@@ -10,6 +10,9 @@ RUN npm run build
 FROM node:alpine
 WORKDIR /app
 
+# Install bash
+RUN apk add --no-cache bash
+
 # Install serve globally
 RUN npm install -g serve
 
@@ -20,5 +23,5 @@ COPY --from=build-stage /app/build /app
 EXPOSE 8080
 
 # Start the application, ensuring it listens on the correct port
-CMD ["sh", "./start.sh"]
+CMD ["bash", "./start.sh"]
 
