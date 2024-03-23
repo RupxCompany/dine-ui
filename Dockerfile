@@ -14,7 +14,7 @@ WORKDIR /app
 
 # Install bash
 RUN apk add --no-cache bash
-
+RUN export PRANA_RUNTIME_SECRETS="REACT_APP_DINE_ENGINE_URL=https://i-dine-engine.firebaseapp.com"
 RUN echo $PRANA_RUNTIME_SECRETS >> .env
 
 # Install serve globally
