@@ -84,6 +84,7 @@ function App() {
         cart={cart}
         setCart={setCart}
         ctaPhone={ctaPhone}
+        restaurantInfo={restaurantInfo}
       />
     </Box>
   )
