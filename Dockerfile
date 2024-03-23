@@ -8,10 +8,14 @@ COPY . .
 # Accept the build argument for REACT_APP_DINE_ENGINE_URL
 ARG REACT_APP_DINE_ENGINE_URL
 
+RUN echo $REACT_APP_DINE_ENGINE_URL, "<<<REACT_APP_DINE_ENGINE_URL"
+
 # Set the environment variable
 ENV REACT_APP_DINE_ENGINE_URL=$REACT_APP_DINE_ENGINE_URL
 
 RUN env
+
+RUN echo $REACT_APP_DINE_ENGINE_URL, "<<<REACT_APP_DINE_ENGINE_URL"
 
 # Build the app
 RUN npm run build
