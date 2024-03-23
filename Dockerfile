@@ -21,9 +21,11 @@ COPY --from=build-stage /app/build /app
 
 # Copy the start.sh script into the image
 COPY start.sh /app
+COPY pre-start.sh /app
 
 # Make sure the script is executable
 RUN chmod +x /app/start.sh
+RUN chmod +x /app/pre-start.sh
 
 # Expose the port (optional for Cloud Run, but good practice)
 EXPOSE 8080
