@@ -2,19 +2,14 @@
 FROM node:20.11.1 as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
 COPY . .
 
 COPY secrets.env .
 
-RUN cat ./secrets.env
-
-RUN export $(cat ./secrets.env | xargs)
-
-RUN env
-
-# Build the app
-RUN npm run build
+RUN export $(cat ./secrets.env | xargs) && \
+    # Run your build commands here, for example:
+    npm install && \
+    npm run build
 
 # Step 2: Serve the app using serve
 FROM node:20.11.1
