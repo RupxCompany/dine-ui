@@ -16,10 +16,10 @@ import {
   Icon,
 } from '@chakra-ui/react'
 import {FaCheckCircle} from 'react-icons/fa'
-import {FaWhatsapp} from 'react-icons/fa' // Importing the WhatsApp icon
+import {FaWhatsapp} from 'react-icons/fa'
 
 
-const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone}) => {
+const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone, restaurantInfo}) => {
   const itemQuantityInCart = (item) => cart.filter((k) => k.id === item.id).length
 
   const uniqueItemsInCart = () => cart.filter((item, index, array) =>
@@ -30,18 +30,25 @@ const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone}) => {
   (parseInt(item.price, 10) * itemQuantityInCart(item)), 0)
 
   const handlePlaceOrder = () => {
-    let message = 'I would like to place an order:\n'
+    const separator = `${'—'.repeat(15)}`
+    const itemsText = `\n${separator}\nItems:\n${separator}\n`
+    let message = `I would like to place an order:\n${separator}\n`
+    message += `ID: ${Math.random().toString(36).slice(2, 8).toUpperCase()}\n`
+    message += `From: ${restaurantInfo.space}\n`
+    message += itemsText
     uniqueItemsInCart().forEach((item) => {
       // eslint-disable-next-line max-len
-      message += `${item.name} - Quantity: ${itemQuantityInCart(item)} - Price: ₹${item.price * itemQuantityInCart(item)}\n`
+      message += `${item.name} - x ${itemQuantityInCart(item)} = ₹${item.price * itemQuantityInCart(item)}\n`
     })
-    message += `Total: ₹${totalCartValue}`
+    message += `\n${separator}\n`
+    message += `Total: ₹${totalCartValue}\n`
+    message += separator
 
     const encodedMessage = encodeURIComponent(message)
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${ctaPhone}&text=${encodedMessage}`
 
     setCart([])
-    window.open(whatsappUrl, '_blank') // Open WhatsApp in a new tab/window
+    window.open(whatsappUrl) // Open WhatsApp in a new tab/window
     onClose()
   }
 

@@ -7,6 +7,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        {/* <Route exact path="/" element={<Home />} /> */}
         <Route exact path="/:qrCode" element={<Home />} />
         <Route path="/404" element={<NotFoundPage />} />
         <Route path="*" element={<Navigate to="/404" />} />
