@@ -27,7 +27,7 @@ steps:
         --image=gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA
       - >-
         --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$SHORT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID
-      - '--region=$_DEPLOY_REGION'
+      - '--region=asia-south1'
       - '--quiet'
     id: Deploy
     entrypoint: gcloud
