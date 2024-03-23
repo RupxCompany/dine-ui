@@ -5,20 +5,9 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-# Accept the build argument for REACT_APP_DINE_ENGINE_URL
-# ARG REACT_APP_DINE_ENGINE_URL
+COPY secrets.env .
 
-# RUN echo $REACT_APP_DINE_ENGINE_URL, "<<<REACT_APP_DINE_ENGINE_URL"
-
-# # Set the environment variable
-# ENV REACT_APP_DINE_ENGINE_URL="$REACT_APP_DINE_ENGINE_URL"
-
-# RUN env
-
-# RUN echo $REACT_APP_DINE_ENGINE_URL, "<<<REACT_APP_DINE_ENGINE_URL"
-# ENV REACT_APP_DINE_ENGINE_URL="https://i-dine-engine.firebaseapp.com"
-
-# Copy the envfile and source it to set environment variables
+RUN cat ./secrets.env
 
 ARG _SECRETS
 RUN echo $_SECRETS
