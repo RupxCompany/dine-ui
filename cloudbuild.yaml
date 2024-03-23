@@ -1,15 +1,18 @@
 steps:
-  - name: gcr.io/cloud-builders/docker
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    id: 'Fetch Secrets and Build'
+    entrypoint: 'bash'
     args:
-      - build
-      - '--no-cache'
-      - '-t'
-      - >-
-        gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA
-      - .
-      - '-f'
-      - Dockerfile
-    id: Build
+      - '-c'
+      - |
+        # Fetch the entire secret file
+        echo "$(gcloud secrets versions access latest --secret="dine-ui-secrets" --format='get(payload.data)' | tr '_-' '/+' | base64 -d)" > envfile
+        # Now build the Docker image, passing the envfile as a build context
+        docker build --no-cache -t gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA . -f Dockerfile
+    volumes:
+      - name: 'vol1'
+        path: '/workspace'
+
   - name: gcr.io/cloud-builders/docker
     args:
       - push

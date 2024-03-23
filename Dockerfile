@@ -18,8 +18,9 @@ COPY . .
 # RUN echo $REACT_APP_DINE_ENGINE_URL, "<<<REACT_APP_DINE_ENGINE_URL"
 # ENV REACT_APP_DINE_ENGINE_URL="https://i-dine-engine.firebaseapp.com"
 
-ENV REACT_APP_DINE_ENGINE_URL=https://i-dine-engine.firebaseapp.com
-ENV REACT_APP_TEST_CONF="test"
+# Copy the envfile and source it to set environment variables
+COPY envfile ./
+RUN set -a && . ./envfile && set +a
 
 
 # Build the app
