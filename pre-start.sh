@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # Check if PRANA_RUNTIME_SECRETS is not empty
-echo env
-env
+
 echo "PRANA_RUNTIME_SECRETS>>>"
-echo $PRANA_RUNTIME_SECRETS
+echo $PRANA_RUNTIME_SECRETS >> .env
 if [ -z "$PRANA_RUNTIME_SECRETS" ]; then
   echo "PRANA_RUNTIME_SECRETS is not set"
   exit 1
