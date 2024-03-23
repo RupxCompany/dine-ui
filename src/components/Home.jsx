@@ -23,7 +23,6 @@ function App() {
 
   useEffect(() => {
     document.title = 'RupX Dine'
-    console.log(process.env, 'process.env')
     const fetchRestaurantInfo = async () => {
       setIsLoading(true)
       try {
