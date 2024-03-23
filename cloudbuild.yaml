@@ -11,7 +11,7 @@ steps:
       - |
         echo "Fetching secret..."
         # Directly inject the secret into the Docker build command without exporting it
-        docker build -t gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA .
+        docker build -t gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA .  --no-cache
 
   # Step 2: Push the image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
