@@ -11,6 +11,8 @@ ARG REACT_APP_DINE_ENGINE_URL
 # Set the environment variable
 ENV REACT_APP_DINE_ENGINE_URL=$REACT_APP_DINE_ENGINE_URL
 
+RUN env
+
 # Build the app
 RUN npm run build
 
