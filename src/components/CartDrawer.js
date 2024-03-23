@@ -41,7 +41,6 @@ const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone, restaurantInfo}) 
     })
     message += `\n${separator}\n`
     message += `Total: ₹${totalCartValue}\n`
-    message += separator
 
     const encodedMessage = encodeURIComponent(message)
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${ctaPhone}&text=${encodedMessage}`
