@@ -19,6 +19,7 @@ COPY . .
 # ENV REACT_APP_DINE_ENGINE_URL="https://i-dine-engine.firebaseapp.com"
 
 ENV REACT_APP_DINE_ENGINE_URL=https://i-dine-engine.firebaseapp.com
+ENV REACT_TEST_CONF="test"
 
 RUN echo $REACT_APP_DINE_ENGINE_URL, "<<<<REACT_APP_DINE_ENGINE_URL"
 RUN echo $REACT_APP_DINE_ENGINE_URL > .env
