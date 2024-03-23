@@ -1,37 +1,43 @@
-options:
-  logging: CLOUD_LOGGING_ONLY
-
 steps:
-  # Step 1: Fetch secrets from Secret Manager and build the Docker image
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    id: 'build'
-    entrypoint: 'bash'
+  - name: gcr.io/cloud-builders/docker
     args:
-      - '-c'
-      - |
-        echo "Fetching secret..."
-        # Directly inject the secret into the Docker build command without exporting it
-        docker build -t gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA .  --no-cache
-
-  # Step 2: Push the image to Google Container Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push'
+      - build
+      - '--no-cache'
+      - '-t'
+      - >-
+        $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+      - .
+      - '-f'
+      - Dockerfile
+    id: Build
+  - name: gcr.io/cloud-builders/docker
     args:
-      - 'push'
-      - 'gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA'
-
-  # Step 3: Deploy the image to Google Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    id: 'deploy'
-    entrypoint: 'gcloud'
+      - push
+      - >-
+        $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+    id: Push
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
-      - 'run'
-      - 'deploy'
-      - 'i-dine-ui-service'
-      - '--image=gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA'
-      - '--region=asia-south1'
+      - run
+      - services
+      - update
+      - $_SERVICE_NAME
       - '--platform=managed'
-      - '--allow-unauthenticated'
-
+      - >-
+        --image=$_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+      - >-
+        --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID
+      - '--region=$_DEPLOY_REGION'
+      - '--quiet'
+    id: Deploy
+    entrypoint: gcloud
 images:
-  - 'gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA'
+  - >-
+    $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+options:
+  substitutionOption: ALLOW_LOOSE
+  logging: CLOUD_LOGGING_ONLY
+tags:
+  - gcp-cloud-build-deploy-cloud-run
+  - gcp-cloud-build-deploy-cloud-run-managed
+
