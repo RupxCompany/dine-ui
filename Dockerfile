@@ -5,9 +5,12 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-# Set environment variable before building the app
-ENV REACT_APP_DINE_ENGINE_URL=https://i-dine-engine.firebaseapp.com
-RUN env
+# Accept the build argument for REACT_APP_DINE_ENGINE_URL
+ARG REACT_APP_DINE_ENGINE_URL
+
+# Set the environment variable
+ENV REACT_APP_DINE_ENGINE_URL=$REACT_APP_DINE_ENGINE_URL
+
 # Build the app
 RUN npm run build
 
@@ -15,10 +18,8 @@ RUN npm run build
 FROM node:alpine
 WORKDIR /app
 
-# Install bash
+# Install bash and serve
 RUN apk add --no-cache bash
-
-# Install serve globally
 RUN npm install -g serve
 
 # Copy the built app from the build-stage
