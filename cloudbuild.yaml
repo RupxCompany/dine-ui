@@ -2,21 +2,20 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 steps:
-  # Step 1: Fetch secrets from Secret Manager
+  # Step 1: Fetch secrets from Secret Manager and build the Docker image
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         echo "Fetching secret..."
-        SECRET_VALUE=$(gcloud secrets versions access latest --secret="dine-ui-secrets")
-        export $SECRET_VALUE
+        SECRET_VALUE=$(gcloud secrets versions access latest --secret="dine-ui-secrets" --format='get(payload.data)' | tr '_-' '/+' | base64 -d)
         echo "Building Docker image..."
-        docker build --build-arg REACT_APP_DINE_ENGINE_URL=$(echo $SECRET_VALUE | cut -d '=' -f2) -t gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA .
+        docker build --build-arg REACT_APP_DINE_ENGINE_URL=$(echo $SECRET_VALUE | cut -d '=' -f2) -t gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA .
 
   # Step 2: Push the image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA']
+    args: ['push', 'gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA']
 
   # Step 3: Deploy the image to Google Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -25,7 +24,7 @@ steps:
       - 'deploy'
       - 'i-dine-ui-service'
       - '--image'
-      - 'gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA'
+      - 'gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA'
       - '--region'
       - 'us-central1'
       - '--platform'
@@ -33,4 +32,4 @@ steps:
       - '--allow-unauthenticated'
 
 images:
-  - 'gcr.io/prana-menu-staging/i-dine-ui:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/i-dine-ui:$SHORT_SHA'
