@@ -19,13 +19,13 @@ COPY . .
 # ENV REACT_APP_DINE_ENGINE_URL="https://i-dine-engine.firebaseapp.com"
 
 # Copy the envfile and source it to set environment variables
-RUN ls /
-RUN ls /env/
-RUN cat /env/secrets
-COPY /env/secrets	 ./
-RUN set -a && . ./secrets && set +a
 
+ARG SECRETS
+RUN echo $SECRETS
 
+RUN echo $SECRETS > .env && export $(cat .env | xargs)
+
+RUN env
 
 # Build the app
 RUN npm run build
