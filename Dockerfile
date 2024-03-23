@@ -7,7 +7,7 @@ COPY . .
 
 # Set environment variable before building the app
 ENV REACT_APP_DINE_ENGINE_URL=https://i-dine-engine.firebaseapp.com
-
+RUN env
 # Build the app
 RUN npm run build
 
