@@ -21,7 +21,8 @@ COPY . .
 # Copy the envfile and source it to set environment variables
 COPY envfile ./
 RUN set -a && . ./envfile && set +a
-
+RUN cat envfile
+RUN env
 
 # Build the app
 RUN npm run build
