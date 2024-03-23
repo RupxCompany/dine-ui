@@ -1,16 +1,22 @@
 # Step 1: Build the React application
-FROM node:alpine as build-stage
+FROM node:20.11.1 as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
 COPY . .
-RUN npm run build
+
+COPY secrets.env .
+
+RUN export $(cat ./secrets.env | xargs) && \
+    # Run your build commands here, for example:
+    npm install && \
+    npm run build
 
 # Step 2: Serve the app using serve
-FROM node:alpine
+FROM node:20.11.1
 WORKDIR /app
 
-# Install serve globally
+# Install bash and serve
+
 RUN npm install -g serve
 
 # Copy the built app from the build-stage

@@ -1,19 +1,35 @@
-import React from 'react';
-import { Box, Flex, Input, InputGroup, InputLeftElement, Text, HStack, Badge } from '@chakra-ui/react';
-import { MdLocationOn } from 'react-icons/md';
-import { FiShoppingCart } from 'react-icons/fi';
-import { SearchIcon } from '@chakra-ui/icons';
+import React from 'react'
+import {
+  Box, Flex, Input,
+  InputRightElement, Button, InputGroup,
+  InputLeftElement, Text, HStack, Badge,
+} from '@chakra-ui/react'
+import {MdLocationOn} from 'react-icons/md'
+import {FiShoppingCart} from 'react-icons/fi'
+import {SearchIcon, CloseIcon} from '@chakra-ui/icons'
 
-const Header = ({ cartItemCount, showCart }) => {
+const Header = ({cartItemCount, showCart, searchQuery, onSearchChange, restaurantInfo}) => {
+  const handleSearchChange = (event) => {
+    onSearchChange(event.target.value)
+  }
+
+  const clearSearch = () => {
+    onSearchChange('')
+  }
+
   return (
     <Box p={4} boxShadow="lg" borderBottomRadius="lg" bg="#5ed141">
       <HStack justifyContent="space-between">
         <Flex alignItems="center">
           <MdLocationOn color="white" size="1.5rem" />
-          <Text marginLeft="2" fontFamily="'Roboto', sans-serif" color="white">Jugglers Rest: 3B</Text>
+          <Text
+            marginLeft="2"
+            fontFamily="'Roboto', sans-serif"
+            color="white">{restaurantInfo.restaurant}: {restaurantInfo.space}
+          </Text>
         </Flex>
         <Box position="relative" onClick={showCart}>
-          <FiShoppingCart color="white" size="1.6rem"  />
+          <FiShoppingCart color="white" size="1.6rem" />
           {cartItemCount > 0 && (
             <Badge
               position="absolute"
@@ -31,12 +47,28 @@ const Header = ({ cartItemCount, showCart }) => {
       </HStack>
       <Box width="100%" mt={4}>
         <InputGroup>
-          <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
-          <Input bg="white" color="black" placeholder="Search for food.." borderRadius="full" width="100%" fontFamily="'Lato', sans-serif" />
+          <InputLeftElement pointerEvents="none"
+            // eslint-disable-next-line react/no-children-prop
+            children={<SearchIcon color="gray.300" />} />
+          <Input
+            bg="white"
+            color="black" placeholder="Search for food.."
+            borderRadius="full" width="100%"
+            value={searchQuery}
+            fontFamily="'Lato', sans-serif"
+            onChange={handleSearchChange}
+          />
+          {searchQuery && (
+            <InputRightElement>
+              <Button size="xs" variant="ghost" onClick={clearSearch}>
+                <CloseIcon />
+              </Button>
+            </InputRightElement>
+          )}
         </InputGroup>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default Header;
+export default Header

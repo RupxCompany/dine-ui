@@ -1,0 +1,42 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    id: 'Fetch Secrets and Build'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Fetch the entire secret file
+        gcloud secrets versions access latest --secret="dine-ui-secrets" --format='get(payload.data)' | tr '_-' '/+' | base64 -d > secrets.env
+        docker build --no-cache -t gcr.io/$PROJECT_ID/$_SERVICE_NAME:$SHORT_SHA . -f Dockerfile
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - >-
+        gcr.io/$PROJECT_ID/$_SERVICE_NAME:$SHORT_SHA
+    id: Push
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    args:
+      - run
+      - services
+      - update
+      - $_SERVICE_NAME
+      - '--platform=managed'
+      - >-
+        --image=gcr.io/$PROJECT_ID/$_SERVICE_NAME:$SHORT_SHA
+      - >-
+        --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$SHORT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID
+      - '--region=asia-south1'
+      - '--quiet'
+    id: Deploy
+    entrypoint: gcloud
+images:
+  - >-
+    gcr.io/$PROJECT_ID/$_SERVICE_NAME:$SHORT_SHA
+options:
+  substitutionOption: ALLOW_LOOSE
+  logging: CLOUD_LOGGING_ONLY
+tags:
+  - gcp-cloud-build-deploy-cloud-run
+  - gcp-cloud-build-deploy-cloud-run-managed
+
