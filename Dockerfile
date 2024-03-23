@@ -16,6 +16,7 @@ ENV REACT_APP_DINE_ENGINE_URL="$REACT_APP_DINE_ENGINE_URL"
 RUN env
 
 RUN echo $REACT_APP_DINE_ENGINE_URL, "<<<REACT_APP_DINE_ENGINE_URL"
+ENV REACT_APP_DINE_ENGINE_URL="https://i-dine-engine.firebaseapp.com"
 
 # Build the app
 RUN npm run build
