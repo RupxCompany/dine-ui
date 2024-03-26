@@ -1,24 +1,56 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Box, Button, VStack, SimpleGrid, Text, Image, Center, Icon} from '@chakra-ui/react'
 import {AddIcon} from '@chakra-ui/icons'
+import {
+  trackAddToCart,
+  trackCartItemQuantityIncrease,
+  trackRemovedFromCart,
+  trackSearchQueryResults,
+  trackCartItemQuantityDecrease} from '../utils/mixpanel'
 
 
-const CategoryItems = ({category, cart, setCart, searchQuery}) => {
-  const items = (categoryItems[category] || []).filter((item) =>
+const CategoryItems = ({category, cart, setCart, searchQuery, restaurantInfo, qrCode}) => {
+  const filteredItems = (categoryItems[category] || []).filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()),
   )
-  const [quantities, setQuantities] = useState(items.map(() => 0))
+
+  const [quantities, setQuantities] = useState(filteredItems.map(() => 0))
+
+  const itemQuantityInCart = (item) => cart.filter((k) => k.id === item.id).length
+
+
+  // Fixme: code is duplicated from cart drawer. Move both to a common place
+  const uniqueItemsInCart = () => cart.filter((item, index, array) =>
+    index === array.findIndex((t) => t.id === item.id),
+  )
+  const totalCartValue = uniqueItemsInCart().reduce((total, item) => total +
+        (parseInt(item.price, 10) * itemQuantityInCart(item)), 0)
 
   const handleQuantityChange = (item, value) => {
     const newQuantities = [...quantities]
+    const trackingProperties = {
+      item_name: item.name,
+      item_price: item.price,
+      total_cart_size: cart.length,
+      items_in_cart: cart.map((i) => i.name),
+      total_cart_value: totalCartValue,
+      quantity: value,
+      qr_code: qrCode,
+      ...restaurantInfo}
+
+    if (value === 0) trackRemovedFromCart(trackingProperties)
+
     setQuantities(newQuantities)
+
     if (itemQuantityInCart(item) < value) {
       setCart([...cart, item])
+      trackCartItemQuantityIncrease(trackingProperties)
     } else {
       const index = cart.findIndex((i) => i.id === item.id)
       const newCart = [...cart]
       newCart.splice(index, 1)
       setCart(newCart)
+      trackCartItemQuantityDecrease(trackingProperties)
     }
   }
 
@@ -27,13 +59,31 @@ const CategoryItems = ({category, cart, setCart, searchQuery}) => {
     newQuantities[index] = 1
     setQuantities(newQuantities)
     setCart([...cart, item])
+    trackAddToCart({
+      item_name: item.name,
+      item_price: item.price,
+      total_cart_size: cart.length,
+      items_in_cart: cart.map((i) => i.name),
+      total_cart_value: totalCartValue,
+      qr_code: qrCode,
+      ...restaurantInfo,
+    })
   }
 
-  const itemQuantityInCart = (item) => cart.filter((k) => k.id === item.id).length
+  useEffect(() => {
+    if (searchQuery) {
+      trackSearchQueryResults({
+        search_query: searchQuery,
+        result_count: filteredItems.length,
+        qr_code: qrCode,
+        ...restaurantInfo,
+      })
+    }
+  }, [filteredItems, searchQuery])
 
   return (
     <SimpleGrid columns={{sm: 1, md: 2, lg: 3}} spacing={5} p={5}>
-      {items.map((item, index) => (
+      {filteredItems.map((item, index) => (
         <Box key={index} p={5} boxShadow="sm" borderRadius="lg" bg="white" display="flex" flexDirection="row-reverse">
           <Box position="relative" boxSize="100px" alignSelf="center">
             {item.image_path?

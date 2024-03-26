@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {
   Drawer,
   DrawerBody,
@@ -17,9 +17,9 @@ import {
 } from '@chakra-ui/react'
 import {FaCheckCircle} from 'react-icons/fa'
 import {FaWhatsapp} from 'react-icons/fa'
+import {trackOrderPlaced, trackViewCart} from '../utils/mixpanel'
 
-
-const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone, restaurantInfo}) => {
+const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone, restaurantInfo, qrCode}) => {
   const itemQuantityInCart = (item) => cart.filter((k) => k.id === item.id).length
 
   const uniqueItemsInCart = () => cart.filter((item, index, array) =>
@@ -28,6 +28,18 @@ const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone, restaurantInfo}) 
 
   const totalCartValue = uniqueItemsInCart().reduce((total, item) => total +
   (parseInt(item.price, 10) * itemQuantityInCart(item)), 0)
+
+  const trackCartProperties = {
+    total_cart_value: totalCartValue,
+    items_in_cart: cart.map((i) => i.name),
+    cart,
+    qr_code: qrCode,
+    ...restaurantInfo,
+  }
+
+  useEffect(() => {
+    trackViewCart(trackCartProperties)
+  }, [])
 
   const handlePlaceOrder = () => {
     const separator = `${'—'.repeat(15)}`
@@ -44,6 +56,8 @@ const CartDrawer = ({isOpen, onClose, cart, setCart, ctaPhone, restaurantInfo}) 
 
     const encodedMessage = encodeURIComponent(message)
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${ctaPhone}&text=${encodedMessage}`
+
+    trackOrderPlaced(trackCartProperties)
 
     setCart([])
     window.open(whatsappUrl, '_blank') // Open WhatsApp in a new tab/window
