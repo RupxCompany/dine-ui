@@ -6,6 +6,7 @@ import Categories from './Categories'
 import CategoryItems from './CategoryItems'
 import ViewCartButton from './ViewCartButton'
 import CartDrawer from './CartDrawer'
+import {trackQrCodeScan, trackFailedQRCodeScan, trackSearchQuery} from '../utils/mixpanel'
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -13,38 +14,61 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const [restaurantInfo, setRestaurantInfo] = useState({restaurant: '', space: ''})
+  const [restaurantInfo, setRestaurantInfo] = useState({restaurant: '', space: '', restaurant_id: null})
   const [ctaPhone, setCtaPhone] = useState('')
+
   const handleSelectCategory = (category) => {
     setSelectedCategory(category)
   }
   const navigate = useNavigate()
   const {qrCode} = useParams()
 
+  const fetchRestaurantInfo = async () => {
+    setIsLoading(true)
+    try {
+      if (!qrCode) {
+        throw new Error('No QR code found in the URL')
+      }
+      const response = await fetch(`${process.env.REACT_APP_DINE_ENGINE_URL}/qr/${qrCode}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch restaurant info')
+      }
+      const resp = await response.json()
+
+      setRestaurantInfo({
+        restaurant: resp.data.restaurant,
+        space: resp.data.space,
+        restaurant_id: resp.data.restaurant_id})
+
+      setCtaPhone(resp.data.cta_phone)
+      trackQrCodeScan({
+        ...resp.data,
+        qr_code: qrCode,
+      })
+    } catch (error) {
+      trackFailedQRCodeScan({
+        qr_code: qrCode,
+        error: error,
+      })
+      navigate('/404')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleSearch = (query) => {
+    setSearchQuery(query)
+    trackSearchQuery({
+      query,
+      qr_code: qrCode,
+      ...restaurantInfo,
+    })
+  }
+
   useEffect(() => {
     document.title = 'RupX Dine'
-    const fetchRestaurantInfo = async () => {
-      setIsLoading(true)
-      try {
-        if (!qrCode) {
-          throw new Error('No QR code found in the URL')
-        }
-        const response = await fetch(`${process.env.REACT_APP_DINE_ENGINE_URL}/qr/${qrCode}`)
-        if (!response.ok) {
-          throw new Error('Failed to fetch restaurant info')
-        }
-        const resp = await response.json()
-        setRestaurantInfo({restaurant: resp.data.restaurant, space: resp.data.space})
-        setCtaPhone(resp.data.cta_phone)
-      } catch (error) {
-        navigate('/404')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
     fetchRestaurantInfo()
-  }, [navigate, qrCode])
+  }, [qrCode])
 
   if (isLoading) {
     return (
@@ -62,7 +86,7 @@ function App() {
         cart={cart}
         showCart={onOpen}
         searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        onSearchChange={handleSearch}
         restaurantInfo={restaurantInfo}
       />
       <Categories
@@ -72,20 +96,24 @@ function App() {
         category={selectedCategory}
         cart={cart}
         setCart={setCart}
-        searchQuery={searchQuery}/>
+        searchQuery={searchQuery}
+        restaurantInfo={restaurantInfo}
+        qrCode={qrCode}
+      />
       {cart.length > 0 &&
        <ViewCartButton
          onClick={onOpen}
          itemCount={cart.length}
        />}
-      <CartDrawer
+      {isOpen && <CartDrawer
         isOpen={isOpen}
         onClose={onClose}
         cart={cart}
         setCart={setCart}
         ctaPhone={ctaPhone}
         restaurantInfo={restaurantInfo}
-      />
+        qrCode={qrCode}
+      />}
     </Box>
   )
 }
