@@ -11,7 +11,10 @@ function getUserId() {
 }
 
 if (mixpanel && mixpanel.init) {
-  mixpanel.init(process.env.REACT_APP_MIXPANEL_TOKEN, {debug: true, track_pageview: true, persistence: 'localStorage'})
+  mixpanel.init(process.env.REACT_APP_MIXPANEL_TOKEN, {
+    debug: process.env.NODE_ENV !== 'production',
+    persistence: 'localStorage',
+  })
   mixpanel.identify(getUserId())
 }
 
