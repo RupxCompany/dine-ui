@@ -1,6 +1,4 @@
 import mixpanel from 'mixpanel-browser'
-mixpanel.init(process.env.REACT_APP_MIXPANEL_TOKEN, {debug: true, track_pageview: true, persistence: 'localStorage'})
-
 import {v4 as uuidv4} from 'uuid'
 
 function getUserId() {
@@ -12,7 +10,10 @@ function getUserId() {
   return userId
 }
 
-mixpanel.identify(getUserId())
+if (mixpanel && mixpanel.init) {
+  mixpanel.init(process.env.REACT_APP_MIXPANEL_TOKEN, {debug: true, track_pageview: true, persistence: 'localStorage'})
+  mixpanel.identify(getUserId())
+}
 
 const trackEvent = (event, properties = {}) => {
   try {
