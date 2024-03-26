@@ -16,7 +16,7 @@ function App() {
   const {isOpen, onOpen, onClose} = useDisclosure()
   const [restaurantInfo, setRestaurantInfo] = useState({restaurant: '', space: '', restaurant_id: null})
   const [ctaPhone, setCtaPhone] = useState('')
-  console.log(process.env, 'env<<<<<')
+
   const handleSelectCategory = (category) => {
     setSelectedCategory(category)
   }
